@@ -1,0 +1,23 @@
+# Build artifacts
+*.img
+*.img.xz
+rootfs.tar
+
+# Kernel sources and build output
+linux-*.tar.xz
+linux-*/
+kernel-*/
+!kernel/
+boot/
+build-modules/
+
+# Temporary directories
+mnt/
+tmp/
+usb_mount/
+
+# Editor files
+.vscode/
+*.swp
+*~
+.DS_Store

@@ -21,7 +21,7 @@ mkfs.ext3 "${LOOP_DEV}p1"
 sync
 
 # Mount the partition
-mkdir /mnt/disk
+mkdir -p /mnt/disk
 mount "${LOOP_DEV}p1" /mnt/disk
 tar -xpf rootfs.tar -C /mnt/disk/
 rm -rf /mnt/disk/.dockerenv

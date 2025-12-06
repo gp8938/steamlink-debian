@@ -38,9 +38,24 @@ RUN systemctl enable dbus
 RUN systemctl enable networking
 RUN systemctl enable systemd-timesyncd
 
+# Generate SSH host keys
+RUN ssh-keygen -A
+
 # /etc/network/interfaces setup
-RUN echo "allow-hotplug eth0" > /etc/network/interfaces
-RUN echo "auto eth0" >> /etc/network/interfaces
-RUN echo "iface eth0 inet dhcp" >> /etc/network/interfaces
+ARG STATIC_IP=192.168.1.7
+ARG STATIC_NETMASK=255.255.255.0
+ARG STATIC_GATEWAY=192.168.1.254
+ARG STATIC_DNS="1.1.1.1 8.8.8.8"
+
+RUN echo "auto lo" > /etc/network/interfaces && \
+    echo "iface lo inet loopback" >> /etc/network/interfaces && \
+    echo "" >> /etc/network/interfaces && \
+    echo "allow-hotplug eth0" >> /etc/network/interfaces && \
+    echo "auto eth0" >> /etc/network/interfaces && \
+    echo "iface eth0 inet static" >> /etc/network/interfaces && \
+    echo "    address $STATIC_IP" >> /etc/network/interfaces && \
+    echo "    netmask $STATIC_NETMASK" >> /etc/network/interfaces && \
+    echo "    gateway $STATIC_GATEWAY" >> /etc/network/interfaces && \
+    echo "    dns-nameservers $STATIC_DNS" >> /etc/network/interfaces
 
 RUN apt-get --yes clean
