@@ -23,9 +23,39 @@ debian@steamlink:~$ fastfetch
              `"""
 ```
 
+## Building from source
+
+### Prerequisites
+
+- Linux system with build tools (gcc, make, etc.)
+- Python 3 for kernel version detection
+- wget for downloading kernel sources
+- Docker (for rootfs generation)
+- About 20GB of disk space for kernel sources and build artifacts
+
+### Building a custom image
+
+Use `build_local.sh` to build a complete image with a specific kernel version:
+
+```bash
+# Build with latest LTS kernel (automatic detection)
+STATIC_IP=192.168.1.7 STATIC_GATEWAY=192.168.1.254 ./build_local.sh latest-lts
+
+# Build with a specific kernel version
+STATIC_IP=192.168.1.7 STATIC_GATEWAY=192.168.1.254 ./build_local.sh 6.12.61
+
+# Specify kernel, branch, and Debian version
+STATIC_IP=192.168.1.7 STATIC_GATEWAY=192.168.1.254 ./build_local.sh 6.1.115 v6.x bookworm
+```
+
+### Build components
+
+- **`kernel/build.sh`**: Compiles the Linux kernel for ARM architecture with Steam Link support
+- **`rootfs/build.sh`**: Creates the root filesystem image using Docker and Debian packages
+
 ## How to use
 
-Download an image of Debian version of your choice from the [Releases](https://github.com/djmuted/steamlink-debian/releases) page and flash it on a 2GB (or bigger) USB stick using [balenaEtcher](https://etcher.balena.io/) or any other USB flasher. SD cards paired with a USB SD Reader work as well.
+Download a pre-built image from the [Releases](https://github.com/djmuted/steamlink-debian/releases) page and flash it on a 2GB (or bigger) USB stick using [balenaEtcher](https://etcher.balena.io/) or any other USB flasher. SD cards paired with a USB SD Reader work as well.
 
 > :warning: **Warning**: Flashing the image on the USB stick will wipe all data stored on the device!
 
