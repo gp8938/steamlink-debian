@@ -4,6 +4,18 @@ FROM docker.io/arm32v7/debian:$DEBIAN_VERSION-slim
 ARG KERNEL_VERSION=5.10.228
 ARG DEBIAN_VERSION=bullseye
 
+# Set locale and debconf to avoid warnings
+ENV LANG=en_US.UTF-8 \
+    LC_ALL=en_US.UTF-8 \
+    LC_CTYPE=en_US.UTF-8 \
+    DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y --no-install-recommends locales && \
+    echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
+    locale-gen && \
+    apt-get remove -y locales && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
+
 COPY ./kernel-$KERNEL_VERSION/ /boot/
 RUN mkdir -p /lib/modules && mv /boot/$KERNEL_VERSION-steam /lib/modules/$KERNEL_VERSION-steam
 
