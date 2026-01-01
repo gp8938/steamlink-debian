@@ -53,6 +53,11 @@ RUN systemctl enable systemd-timesyncd
 # Set hostname
 RUN echo "steamlink" > /etc/hostname
 
+# Configure dhcpcd to not override hostname
+RUN echo "nohook lookup-hostname" > /etc/dhcpcd.conf.d/nohostname.conf || \
+    (mkdir -p /etc/dhcpcd.conf.d && echo "nohook lookup-hostname" > /etc/dhcpcd.conf.d/nohostname.conf) || \
+    echo "nohook lookup-hostname" >> /etc/dhcpcd.conf
+
 # Generate SSH host keys
 RUN ssh-keygen -A
 
