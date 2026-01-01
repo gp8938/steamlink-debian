@@ -50,6 +50,10 @@ RUN systemctl enable dbus
 RUN systemctl enable networking
 RUN systemctl enable systemd-timesyncd
 
+# Set hostname
+RUN echo "steamlink" > /etc/hostname
+RUN echo "127.0.1.1 steamlink" >> /etc/hosts
+
 # Generate SSH host keys
 RUN ssh-keygen -A
 
